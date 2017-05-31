@@ -1,0 +1,335 @@
+STRONG TYPING
+=============
+Python is strongly typed because every object has a type, every object knows its type, it's impossible to accidentally or deliberately use an object of a type "as if" it was an object of a different type, and all elementary operations on the object are delegated to its type.
+
+This has nothing to do with names. A name in Python doesn't "have a type": if and when a name's defined, the name refers to an object, and the object does have a type (but that doesn't in fact force a type on the name: a name is a name).
+(from Alex Martelli)
+
+***
+A name in Python can perfectly well refer to different objects at different times (as in most programming languages, though not all) -- and there is no constraint on the name such that, if it has once referred to an object of type X, it's then forevermore constrained to refer only to other objects of type X. Constraints on names are not part of the concept of "strong typing", though some enthusiasts of static typing (where names do get constrained, and in a static, AKA compile-time, fashion, too) do misuse the term this way.
+***
+
+
+COPY AND DEEPCOPY, WITH NESTED DICTIONARIES AND POP()
+=====================================================
+vedi: http://www.python-course.eu/deep_copy.php
+We will introduce you to the most crucial problems, which can occur when copying mutable objects, i.e. when copying lists and dictionaries.
+
+CODE EXAMPLE:
+The idea in this code:
+"But as soon as a list contains sublists, we have the same difficulty, i.e. just pointers to the sublists"
+>>> d = {
+... 'a': {
+... 'x': 1, 'y': 2, 'z': 3
+... },
+... 'b': {
+... 'u': 11,
+... 'v': 21
+... },
+... 'c': {
+... 's': 100,
+... 't': 200}
+... }
+>>> 
+>>> 
+>>> d
+{'a': {'y': 2, 'x': 1, 'z': 3}, 'c': {'s': 100, 't': 200}, 'b': {'u': 11, 'v': 21}}
+>>> 
+>>> 
+>>> id(d)
+140112283280560
+>>> from pprint import pprint
+>>> 
+>>> pprint(d)
+{'a': {'x': 1, 'y': 2, 'z': 3},
+ 'b': {'u': 11, 'v': 21},
+ 'c': {'s': 100, 't': 200}}
+>>> 
+>>> b = d.copy()
+>>> id(b)
+140112283315288
+>>> b['a'].pop('y')
+2
+>>> d
+{'a': {'x': 1, 'z': 3}, 'c': {'s': 100, 't': 200}, 'b': {'u': 11, 'v': 21}}
+>>> b
+{'a': {'x': 1, 'z': 3}, 'c': {'s': 100, 't': 200}, 'b': {'u': 11, 'v': 21}}
+>>> import copy
+>>> 
+>>> c = copy.deepcopy(d)
+>>> id(d)
+140112283280560
+>>> id(b)
+140112283315288
+>>> id(c)
+140112283327016
+>>> d
+{'a': {'x': 1, 'z': 3}, 'c': {'s': 100, 't': 200}, 'b': {'u': 11, 'v': 21}}
+>>> c
+{'a': {'x': 1, 'z': 3}, 'c': {'s': 100, 't': 200}, 'b': {'u': 11, 'v': 21}}
+>>> c['b'].pop('v')
+21
+>>> c
+{'a': {'x': 1, 'z': 3}, 'c': {'s': 100, 't': 200}, 'b': {'u': 11}}
+>>> d
+{'a': {'x': 1, 'z': 3}, 'c': {'s': 100, 't': 200}, 'b': {'u': 11, 'v': 21}}
+>>> b
+{'a': {'x': 1, 'z': 3}, 'c': {'s': 100, 't': 200}, 'b': {'u': 11, 'v': 21}}
+>>> d.pop('c')
+{'s': 100, 't': 200}
+>>> d
+{'a': {'x': 1, 'z': 3}, 'b': {'u': 11, 'v': 21}}
+>>> b
+{'a': {'x': 1, 'z': 3}, 'c': {'s': 100, 't': 200}, 'b': {'u': 11, 'v': 21}}
+>>> d['b'].pop('v')
+21
+>>> d
+{'a': {'x': 1, 'z': 3}, 'b': {'u': 11}}
+>>> b
+{'a': {'x': 1, 'z': 3}, 'c': {'s': 100, 't': 200}, 'b': {'u': 11}}
+>>> 
+KeyboardInterrupt
+
+
+
+
+x86-64
+======
+x86-64 (also known as x64, x86_64 and AMD64[note 1]) is the 64-bit version of the x86 instruction set. It supports vastly larger amounts (theoretically, 264 bytes or 16 exabytes) of virtual memory and physical memory than is possible on its 32-bit predecessors, allowing programs to store larger amounts of data in memory. x86-64 also provides 64-bit general-purpose registers and numerous other enhancements. It is fully backward compatible with 16-bit and 32-bit x86 code.
+
+Vantaggi fra 32 e 64 bit
+========================
+The upside you would get is a better performance. 64 bit code have to be faster, and there are reasons:
+
+* Function call convention. In general 32 bit code passes parameters through a stack — which is a memory; while 64 bit code uses CPU registers for passing arguments. Even supposedly that CPU cache would reduce the performance hit to the minimal, there's an overhead of copying parameters into a stack.
+* More registers size — a CPU register now could hold two times bigger value.
+* More registers number — 64 bit code have an access to two times more number of registers. This means that in cases where 32 bit code have to store a value into a memory, 64 bit code could just leave it in CPU.
+
+There's a drawback though that pointers now have two times bigger size, but I tend to think that upsides are still stronger.
+
+Callback
+========
+In computer programming, a callback is any executable code that is passed as an argument to other code, which is expected to call back (execute) the argument at a given time. This execution may be immediate as in a synchronous callback, or it might happen at a later time as in an asynchronous callback. In all cases, the intention is to specify a function or subroutine as an entity[clarification needed] that is, depending on the language, more or less similar to a variable.
+
+EXAMOPLE IN PYTHON:
+>>> def my_callback(val):
+...     print("function my_callback was called with {0}".format(val))
+...
+>>> def caller(val, func):
+...     func(val)
+...
+>>> for i in range(5):
+...     caller(i, my_callback)
+...
+function my_callback was called with 0
+function my_callback was called with 1
+function my_callback was called with 2
+function my_callback was called with 3
+function my_callback was called with 4
+
+
+			--- °°° ---
+
+Locale
+======
+For a number of perfectly valid reasons some web applications would like to associate a locale with each user that visits the site. 
+Some of this information is common to traditional software locales, such as:
+* What numeric formats does the user expect?
+* How should dates and times be formatted?
+
+In other cases, other information may be derived from the locale information, such as:
+* Should measurements be metric (centimeters, kilometers, liters) or imperial (inches, miles, gallons)?
+* What is the user's time zone?
+* Does the user use Letter size paper, or A4?
+
+Since none of these are included in the HTTP protocol many web developers have used the Accept-Language header to make inferences about the user's locale.
+The Accept-Language header is passed via HTTP when a document is requested
+
+
+A Best Current Practice (BCP) is a de facto level of performance in engineering and information technology.
+An IETF language tag is an abbreviated language code defined by the Internet Engineering Task Force (IETF) in the BCP 47
+A language code is a code that assigns letters or numbers as identifiers or classifiers for languages.
+
+
+Class methods, cls vs. self and class variables
+===============================================
+
+
+Define class method:
+
+class Foo(object):
+    bar = 1
+    @classmethod
+    def bah(cls):    
+        print cls.bar
+
+Now if bah() has to be instance method (i.e. have access to self), you can still directly access the class variable.
+
+class Foo(object):
+    bar = 1
+    def bah(self):    
+        print self.bar
+
+ref.: http://stackoverflow.com/questions/707380/in-python-how-can-i-access-static-class-variables-within-class-methods
+
+
+Accedi a una variabile di classe senza usare cls e @classmethod
+===============================================================
+QUESTO NON FUNZIONA:
+
+19:42 plottigat@fbk_easyconfig$ python 
+Python 2.7.12 (default, Nov 19 2016, 06:48:10) 
+[GCC 5.4.0 20160609] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> class Foo(object):
+...     thing = 'athing'
+...     def ciao(self): print thing
+... 
+>>> 
+>>> f=Foo()
+>>> f.ciao()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "<stdin>", line 3, in ciao
+NameError: global name 'thing' is not defined
+>>> 
+
+QUESTO INVECE FUNZIONA:
+
+19:46 plottigat@fbk_easyconfig$ python
+Python 2.7.12 (default, Nov 19 2016, 06:48:10) 
+[GCC 5.4.0 20160609] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> class Foo(object):
+...      thing = 'athing'
+...      def ciao(self): print self.thing
+... 
+>>> f=Foo()
+>>> f.ciao()
+athing
+>>> 
+
+MOTIVO:
+self.variable accede a variable definita nella classe.
+variable da solo significa che python cerca variable definita nel modulo (dove di solito scrivi le import)
+
+x86-64
+======
+x86-64 (also known as x64, x86_64 and AMD64[note 1]) is the 64-bit version of the x86 instruction set. It supports vastly larger amounts (theoretically, 264 bytes or 16 exabytes) of virtual memory and physical memory than is possible on its 32-bit predecessors, allowing programs to store larger amounts of data in memory. x86-64 also provides 64-bit general-purpose registers and numerous other enhancements. It is fully backward compatible with 16-bit and 32-bit x86 code.
+
+Vantaggi fra 32 e 64 bit
+========================
+The upside you would get is a better performance. 64 bit code have to be faster, and there are reasons:
+
+* Function call convention. In general 32 bit code passes parameters through a stack — which is a memory; while 64 bit code uses CPU registers for passing arguments. Even supposedly that CPU cache would reduce the performance hit to the minimal, there's an overhead of copying parameters into a stack.
+* More registers size — a CPU register now could hold two times bigger value.
+* More registers number — 64 bit code have an access to two times more number of registers. This means that in cases where 32 bit code have to store a value into a memory, 64 bit code could just leave it in CPU.
+
+There's a drawback though that pointers now have two times bigger size, but I tend to think that upsides are still stronger.
+
+Callback
+========
+In computer programming, a callback is any executable code that is passed as an argument to other code, which is expected to call back (execute) the argument at a given time. This execution may be immediate as in a synchronous callback, or it might happen at a later time as in an asynchronous callback. In all cases, the intention is to specify a function or subroutine as an entity[clarification needed] that is, depending on the language, more or less similar to a variable.
+
+EXAMOPLE IN PYTHON:
+>>> def my_callback(val):
+...     print("function my_callback was called with {0}".format(val))
+...
+>>> def caller(val, func):
+...     func(val)
+...
+>>> for i in range(5):
+...     caller(i, my_callback)
+...
+function my_callback was called with 0
+function my_callback was called with 1
+function my_callback was called with 2
+function my_callback was called with 3
+function my_callback was called with 4
+
+
+			--- °°° ---
+
+Locale
+======
+For a number of perfectly valid reasons some web applications would like to associate a locale with each user that visits the site. 
+Some of this information is common to traditional software locales, such as:
+* What numeric formats does the user expect?
+* How should dates and times be formatted?
+
+In other cases, other information may be derived from the locale information, such as:
+* Should measurements be metric (centimeters, kilometers, liters) or imperial (inches, miles, gallons)?
+* What is the user's time zone?
+* Does the user use Letter size paper, or A4?
+
+Since none of these are included in the HTTP protocol many web developers have used the Accept-Language header to make inferences about the user's locale.
+The Accept-Language header is passed via HTTP when a document is requested
+
+
+A Best Current Practice (BCP) is a de facto level of performance in engineering and information technology.
+An IETF language tag is an abbreviated language code defined by the Internet Engineering Task Force (IETF) in the BCP 47
+A language code is a code that assigns letters or numbers as identifiers or classifiers for languages.
+
+
+Class methods, cls vs. self and class variables
+===============================================
+
+
+Define class method:
+
+class Foo(object):
+    bar = 1
+    @classmethod
+    def bah(cls):    
+        print cls.bar
+
+Now if bah() has to be instance method (i.e. have access to self), you can still directly access the class variable.
+
+class Foo(object):
+    bar = 1
+    def bah(self):    
+        print self.bar
+
+ref.: http://stackoverflow.com/questions/707380/in-python-how-can-i-access-static-class-variables-within-class-methods
+
+
+Accedi a una variabile di classe senza usare cls e @classmethod
+===============================================================
+QUESTO NON FUNZIONA:
+
+19:42 plottigat@fbk_easyconfig$ python 
+Python 2.7.12 (default, Nov 19 2016, 06:48:10) 
+[GCC 5.4.0 20160609] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> class Foo(object):
+...     thing = 'athing'
+...     def ciao(self): print thing
+... 
+>>> 
+>>> f=Foo()
+>>> f.ciao()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "<stdin>", line 3, in ciao
+NameError: global name 'thing' is not defined
+>>> 
+
+QUESTO INVECE FUNZIONA:
+
+19:46 plottigat@fbk_easyconfig$ python
+Python 2.7.12 (default, Nov 19 2016, 06:48:10) 
+[GCC 5.4.0 20160609] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> class Foo(object):
+...      thing = 'athing'
+...      def ciao(self): print self.thing
+... 
+>>> f=Foo()
+>>> f.ciao()
+athing
+>>> 
+
+MOTIVO:
+self.variable accede a variable definita nella classe.
+variable da solo significa che python cerca variable definita nel modulo (dove di solito scrivi le import)
+
