@@ -1,0 +1,7 @@
+[2017-10-04@14:46:44] [    INFO] __main__: filepath is _config.yaml
+[2017-10-04@14:46:44] [    INFO] __main__: config file is missing
+Traceback (most recent call last):
+  File ".\sandbox.py", line 33, in sample_function
+    with open(filepath) as infile:
+IOError: [Errno 2] No such file or directory: '_config.yaml'
+[2017-10-04@14:46:44] [    INFO] app: sono dal lato unittest
