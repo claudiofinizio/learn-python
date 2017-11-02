@@ -1,0 +1,16 @@
+Questo è un file pre provare l'UTF-8
+Contiene lettere fuori da ASCII come òçèéàùìñ€
+È pieno anche di cose strambe tipo
+(1, 'Città', '://192.168.1.11:8888', 'http://192.168.1.11:8000', 0, 0, '192.168.1.11', '192.168.1.254');
+γειά σου
+안녕하세요
+שלום
+مرحبا
+नमस्ते
+אַ גוט יאָר
+привет
+您好
+こんにちは
+ყველა თემა წაკითხულად
+viene letto da file e scritto sia su terminale che su file
+forse.
