@@ -1,0 +1,33 @@
+# Help on configuration file config.yaml 
+
+# This file deals with Django models defined inside the config app.
+# The root keys of this file refer to each of the Django models
+# defined inside the app.
+
+# The keys nested inside each model name refer to the settings of the 
+# user itnerface dealing with the model.
+
+# Inside each model, the name of the keys follow the nomenclature used
+# in the Django admin; for example, there is a "list_editable" keys, whose
+# meaning is analogous to Django's.
+
+# Remember: the order in which the fields are shown inside a single model 
+# is definedinside the file easyconfig.yaml.
+
+
+ name: ciao
+max_allowed_length: 100
+# La chiave 'customer_type' significa "alla maniera di..."; sono BP e AC.
+customer_types:
+- name: base
+  acronym: base
+- name: Cattolica
+  acronym: ac
+- name: Altro modo
+  acronym: ax
+
+meeting_types:
+- boolean_value: 0
+  text: congiunta
+- boolean_value: 1
+  text: disgiunta
