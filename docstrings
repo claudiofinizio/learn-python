@@ -1,0 +1,24 @@
+
+    def client_pattern_by_acronym(self, acronym):
+        """Returns a client object, identified by client's acronym.
+
+        * Arguments:
+            - acronym: the acronym of the client looked for.
+
+        * Returns:
+            The first (and only) client object matching with the acronym,
+            since all clients_names have a different acronym.
+            The acronym uniqueness is ensured by the wxpython validators
+            enforced in .clients_names.ClientDialog.__init__
+        * Exceptions raised:
+            This function raises no exception since its caller knows
+            beforehand all the acronyms.
+            A KeyError might be interceptd in the future, if other callers
+            will be added.
+        """
+
+        for client in self.client_patterns:
+            if client['acronym'] == acronym:
+                return client
+        # Placeholder for future: raise KeyError or a customised exception.
+
